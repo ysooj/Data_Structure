@@ -1,2 +1,54 @@
+# 깃허브 데스크탑에서 .gitignore로 추가한 것
 *.db
+*.db
+
+# 빌드 디렉터리
+/build/
+/bin/
+/out/
+
+# 컴파일 결과물
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.out
+*.app
+*.dylib
+
+# 임시 파일
+*.log
+*.tmp
+*.temp
+
+# IDE 관련 파일들
+# Visual Studio
+.vscode/
+.vs/
+*.VC.db
+*.VC.opendb
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# CLion
+cmake-build-*/
+
+# Xcode
+*.xcworkspace/
+*.xcuserdata/
+*.xcodeproj/project.xcworkspace/
+
+# CMake 관련 파일
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# 기타
+*.DS_Store
+*.swp
+*~
 *.db

@@ -63,6 +63,11 @@ public:
 
 int main()
 {
+    List <int> list;
+
+    list.push_back(10);
+    list.push_back(20);
+    list.push_back(30);
 
     return 0;
 }
