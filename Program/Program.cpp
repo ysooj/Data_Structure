@@ -2,72 +2,32 @@
 
 using namespace std;
 
-// ------------------
-// [원형 연결 리스트]
-// ------------------
-
-// head는 항상 "마지막 노드"
-// head->next는 항상 "처음 노드"
+// --------------------------
+// [stl의 vector] ; 동적 배열
+// --------------------------
 
 template <typename T>
 
-class List
+class Vector
 {
 private:
-    struct Node
-    {
-        T data;
-        Node* next;
-    };
+    int count;
+    int capacity;
 
-    int size;
-    Node* head;
+    T * array;
 
 public:
-    List()
+    Vector()
     {
-        size = 0;
-        head = nullptr;
-    }
+        count = 0;
+        capacity = 1;
 
-    void push_back(T data)
-    {
-        Node* newNode = new Node;
-        newNode->data = data;
-        newNode->next = nullptr;
-
-        if (head == nullptr)
-        {
-            head = newNode;
-
-            newNode->next = newNode;
-        }
-
-        else
-        {
-            // newNode가 처음 노드인 head->next를 가리킴
-            // 새 노드를 처음 노드 앞으로 연결
-            newNode->next = head->next;
-
-            // head의 next가 newNode를 가리키게 함
-            // 현재 마지막 노드가 새 노드를 가리킴
-            head->next = newNode;
-
-            // 새 노드를 마지막 노드(head)로 설정
-            head = newNode;
-        }
-
-        size++;
+        array = T[capacity];
     }
 };
 
 int main()
 {
-    List <int> list;
-
-    list.push_back(10);
-    list.push_back(20);
-    list.push_back(30);
 
     return 0;
 }
