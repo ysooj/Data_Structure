@@ -52,3 +52,4 @@ Makefile
 *.swp
 *~
 *.db
+Program/.vs/Program/v17/Solution.VC.db
