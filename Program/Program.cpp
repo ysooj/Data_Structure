@@ -1,44 +1,117 @@
 ﻿#include <iostream>
 
+#define SIZE 5
+
 using namespace std;
 
-// ------------------------
-// [Stack] ; 컨테이너 어댑터.
-// 마지막에 넣은 것이 가장 먼저 나오는 구조. (LIFO: Last In, First Out)
-// ------------------------
+// --------------------------------------------------------
+// [Queue]
+// 선형 큐. Linear
+// 정적 배열
+// 먼저 넣은 것이 먼저 나오는 구조. (FIFO: First In, First Out)
+// --------------------------------------------------------
 
 template <typename T>
 
-class Stack
+class Queue
 {
 private:
-    int count;      // 현재 스택에 들어있는 데이터 개수
-    int capacity;   // 스택이 저장할 수 있는 최대 데이터 개수
-    int highset;    // 스택에서 가장 위에 있는 데이터의 위치를 나타내는 인덱스
-                    // 스택이 비어있을 때는 '위에 있는 데이터가 없음'을 표시하기 위해 -1로 초기화한다.
-    T * container;  // 실제 데이터를 저장하는 배열 포인터
+    int rear;
+    int front;
+
+    T container[SIZE];
 
 public:
-    Stack()
+    Queue()
     {
-        count = 0;              // 데이터가 없으니 개수는 0
-        capacity = 0;           // 초기 용량도 0
-        highset = -1;           // 스택이 비어있음을 의미하기 위해 -1로 설정
-                                // (즉, 유효한 인덱스는 0부터 시작하므로 -1은 '아무것도 없다'는 뜻)
-        container = nullptr;    // 배열 포인터는 아직 할당된 게 없으니 nullptr로 초기화
+        rear = 0;
+        front = 0;
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            container[i] = NULL;
+        }
     }
 
-    ~Stack()
+    void push(T data)
     {
-        if (container != nullptr)
+        // 다 차면 오버플로우 문구 출력
+        if (rear >= SIZE)
         {
-            delete [] container;
+            cout << "Linear queue overflow" << endl;
+        }
+
+        // data 넣고 rear 값을 증가
+        else
+        {
+            container[rear++] = data;
+        }
+
+    }
+
+    void pop()
+    {
+        if (empty())
+        {
+            cout << "Linear queue is empty" << endl;
+        }
+
+        else
+        {
+            container[front++] = NULL;
+        }
+    }
+
+    const int & size()
+    {
+        return rear - front;
+    }
+
+    const bool & empty()
+    {
+        return front == rear;
+    }
+
+    // 가장 앞에 있는 데이터를 출력할 때는 peek이라는 함수명을 사용한다.(front보다는 peek을 씀)
+    const T & peek()
+    {
+        // 비어있으면 exit(1) 해준다.
+        if (empty())
+        {
+            exit(1);
+        }
+        
+        else
+        {
+            return container[front];
         }
     }
 };
 
 int main()
 {
+    Queue <int> queue;
+
+    queue.push(10);
+    queue.push(20);
+    queue.push(30);
+    queue.push(40);
+    queue.push(50);
+    queue.push(100000);
+    queue.empty();
+
+    cout << queue.size() << endl;
+
+    while (queue.empty() == false)
+    {
+        cout << queue.peek() << endl;
+        queue.pop();
+
+        cout << "----------------" << endl;
+    }
+
+    cout << queue.size() << endl;
+    queue.empty();
 
     return 0;
 }

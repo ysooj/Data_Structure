@@ -1,2 +1,4 @@
 ﻿  Program.cpp
+C:\Users\Administrator\Desktop\Data_Structure\Program\Program.cpp(67,1): warning C4172: 지역 변수 또는 임시 의 주소를 반환하는 중
+C:\Users\Administrator\Desktop\Data_Structure\Program\Program.cpp(72,1): warning C4172: 지역 변수 또는 임시 의 주소를 반환하는 중
   Program.vcxproj -> C:\Users\Administrator\Desktop\Data_Structure\Program\x64\Debug\Program.exe
