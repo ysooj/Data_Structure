@@ -21,17 +21,17 @@ private:
         KEY key;
         VALUE value;
 
-        Node * next;
+        Node* next;
     };
 
     struct Bucket
     {
         int count;
-        Node * head;
+        Node* head;
     };
 
     int size;           // bucket의 size
-    Bucket * bucket;    // 동적 배열을 만들기 위해 선언.
+    Bucket* bucket;    // 동적 배열을 만들기 위해 선언. 포인터. Bucket 구조체를 요소로 갖는 배열
 
 public:
     HashTable()
@@ -39,24 +39,134 @@ public:
         size = 8;
 
         bucket = new Bucket[size];
+        // bucket => Bucket 구조체 배열을 가리키는 포인터
+        // bucket[i] => i번째 Bucket 구조체(실제 객체, 포인터 아님)
+        // bucket[i].head => i번째 버킷의 연결 리스트 시작 노드
     }
 
-    const int & hash_function(KEY key)  // hashtable의 key는 size 값보다 작아야 하므로.
+    unsigned int hash_function(KEY key)  // hashtable의 key는 size 값보다 작아야 하므로.
     {
-        return (unsigned int)(key) % size;
+        return (unsigned int)key % size;
+    }
+
+    void insert(KEY key, VALUE value)
+    {
+        // 1. hash_function 함수를 통해서 값을 받는 임시 변수
+        int hashIndex = hash_function(key);
+
+        // 2. 새로운 노드를 생성합니다.
+        Node* newNode = new Node;
+
+        newNode->key = key;
+        newNode->value = value;
+        newNode->next = nullptr;    // insert 함수는 push_front같은 역할을 하기 때문에 뒤에 오는 포인터는 nullptr인 것.
+
+        // 3. 노드가 비어있다면
+        if (bucket[hashIndex].count == 0)
+        {
+            // bucket[hashIndex]의 head 포인터가 newNode를 가리키게 합니다.
+            bucket[hashIndex].head = newNode;
+        }
+
+        // 4. 노드가 1개라도 존재한다면
+        else
+        {
+            newNode->next = bucket[hashIndex].head;
+            bucket[hashIndex].head = newNode;
+        }
+
+        // bucket[hashIndex]의 count를 증가시킵니다.
+        bucket[hashIndex].count++;
+    }
+
+    void erase(KEY key)
+    {
+        // 1. hash_function 함수를 통해서 값을 받는 임시 변수
+        int hashIndex = hash_function(key);
+
+        // 2. Node를 탐색할 수 있는 포인터 변수 선언
+        Node* currentNode = bucket[hashIndex].head;
+
+        // 3. 이전 Node를 저장할 수 있는 포인터 변수
+        Node* previousNode = nullptr;
+
+        // 4. currentNode가 nullptr과 같다면(해당하는 key에 대해 지울 것이 없는 경우) 함수를 종료합니다.
+        if (currentNode == nullptr)
+        {
+            cout << "Not Key Found" << endl;
+            return;
+        }
+
+        // 5. 해당하는 key에 대해 지울 것이 있는 경우
+        else
+        {
+            while (currentNode != nullptr)
+            {
+                // key 값을 찾지 못했다면
+                // previousNode를 currentNode로 하고 currentNode는 다음으로 넘겨준다.
+                if (currentNode->key != key)
+                {
+                    previousNode = currentNode;
+                    currentNode = currentNode->next;
+                }
+
+                // key 값을 찾았다면
+                // previousNode->next는 currentNode->next가 되며, currentNode를 지운다.
+                else
+                {
+
+                }
+                if (currentNode->key == key)
+                {
+                    previousNode->next = currentNode->next;
+
+                    delete currentNode;
+
+                    bucket[hashIndex].count--;
+                }
+
+                // 지울 게 head라면
+                // head는 currentNode->next가 되며, currentNode를 지운다.
+                else if (previousNode == nullptr;)
+                {
+                    bucket[hashIndex].head = currentNode->next;
+
+                    delete currentNode;
+
+                    bucket[hashIndex].count--;
+                }
+
+                // 다 살펴봤는 데도 key를 못 찾았다면
+                // key를 찾지 못했다는 문구를 출력한다.
+                else
+                {
+                    cout << "Not Key Found" << endl;
+                    break;
+                }
+            }
+        }
+    }
+
+    // bucket의 size를 출력하는 함수
+    const int& bucket_count()
+    {
+        return size;
     }
 };
 
 int main()
 {
-    HashTable <const char *, int> hashtable;
+    HashTable <const char*, int> hashtable;
 
-    hashtable.hash_function("KEY1");
+    //  cout << hashtable.hash_function("Operator") << endl;
+    //  cout << hashtable.hash_function("Yahoo") << endl;
+    //  cout << hashtable.hash_function("hello") << endl;
+    //  cout << hashtable.hash_function("hi") << endl;
+    //  cout << hashtable.hash_function("Apple") << endl;
 
-    for (int i = 0; i < 8; i++)
-    {
-        cout << "KEY" << i + 1 << " : " << hashtable.hash_function("") << endl;
-    }
+    hashtable.insert("Abyssal Mask", 3000);
+    hashtable.insert("Bami's Cinder", 1000);
+    hashtable.insert("Chain Vest", 800);
 
     return 0;
 }
