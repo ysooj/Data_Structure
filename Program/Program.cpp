@@ -41,13 +41,9 @@ public:
         bucket = new Bucket[size];
     }
 
-    const int & hash_function(unsigned key)  // hashtable의 key는 size 값보다 작아야 하므로.
+    const int & hash_function(KEY key)  // hashtable의 key는 size 값보다 작아야 하므로.
     {
-        int index;
-
-        index = key % size;
-
-        return index;
+        return (unsigned int)(key) % size;
     }
 };
 
@@ -55,7 +51,12 @@ int main()
 {
     HashTable <const char *, int> hashtable;
 
-    hashtable.hash_function(10);
+    hashtable.hash_function("KEY1");
+
+    for (int i = 0; i < 8; i++)
+    {
+        cout << "KEY" << i + 1 << " : " << hashtable.hash_function("") << endl;
+    }
 
     return 0;
 }
