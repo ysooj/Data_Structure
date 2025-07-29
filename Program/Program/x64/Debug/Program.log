@@ -1,26 +1,27 @@
 ﻿  Program.cpp
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4311: '형식 캐스트': 'KEY'에서 'unsigned int'(으)로 포인터가 잘립니다.
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4311:         with
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4311:         [
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4311:             KEY=const char *
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4311:         ]
-      C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16):
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4311: '형식 캐스트': 'KEY'에서 'unsigned int'(으)로 포인터가 잘립니다.
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4311:         with
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4311:         [
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4311:             KEY=const char *
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4311:         ]
+      C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16):
       템플릿 인스턴스화 컨텍스트(가장 오래된 인스턴스화 컨텍스트)가
-          C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(52,35):
+          C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(200,34):
           컴파일되는 클래스 템플릿 인스턴스화 'HashTable<const char *,int>'에 대한 참조를 확인하세요.
-          C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(44,17):
-          클래스 템플릿 멤버 함수 'const int &HashTable<const char *,int>::hash_function(KEY)'을(를) 컴파일하는 중입니다.
+          C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(52,18):
+          클래스 템플릿 멤버 함수 'unsigned int HashTable<const char *,int>::hash_function(KEY)'을(를) 컴파일하는 중입니다.
           with
           [
               KEY=const char *
           ]
-              C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,28):
-              'main'에서 'HashTable<const char *,int>::hash_function'에 대한 첫 번째 참조를 확인하세요.
+              C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(144,23):
+              'HashTable<const char *,int>::erase_all'에서 'HashTable<const char *,int>::hash_function'에 대한 첫 번째 참조를 확인하세요.
+              C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(222,24):
+              'main'에서 'HashTable<const char *,int>::erase_all'에 대한 첫 번째 참조를 확인하세요.
   
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4302: '형식 캐스트': 'KEY'에서 'unsigned int'(으)로 잘립니다.
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4302:         with
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4302:         [
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4302:             KEY=const char *
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,16): warning C4302:         ]
-C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(46,1): warning C4172: 지역 변수 또는 임시 의 주소를 반환하는 중
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4302: '형식 캐스트': 'KEY'에서 'unsigned int'(으)로 잘립니다.
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4302:         with
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4302:         [
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4302:             KEY=const char *
+C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\Program.cpp(54,16): warning C4302:         ]
   Program.vcxproj -> C:\Users\82103\OneDrive\바탕 화면\Data_Structure\Program\x64\Debug\Program.exe
