@@ -31,7 +31,7 @@ public:
         capacity = newSize;
 
         // 2. 새로운 포인터 변수를 생성해서 새롭게 만들어진 메모리 공간을 가리키도록 합니다.
-        T* temporary = new T[capacity];
+        T * temporary = new T[capacity];
 
         // 3. 새로운 메모리 공간의 값을 초기화합니다.
         for (int i = 0; i < capacity; i++)
