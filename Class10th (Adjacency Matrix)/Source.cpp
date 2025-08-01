@@ -45,7 +45,6 @@ public:
         matrix = nullptr;
     }
 
-    // capacity보다 count가 커지면 이 함수를 불러와야 한다.
     void resize(int newSize)
     {
         // 1. capacity에  새로운 size 값을 저장합니다.
