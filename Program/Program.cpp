@@ -80,11 +80,11 @@ public:
                 {
                     if (currentNode->left == nullptr)
                     {
-                        Node * left = currentNode->left;
+                        currentNode->left = new Node;
 
-                        left->data = data;
-                        left->left = nullptr;
-                        left->right = nullptr;
+                        currentNode->left->data = data;
+                        currentNode->left->left = nullptr;
+                        currentNode->left->right = nullptr;
                     }
 
                     else
@@ -93,27 +93,28 @@ public:
                     }
                 }
 
-                // 중복된 data라면 data를 넣지 못하게 하기
-                else if (root->data == data)
-                {
-                    cout << "중복된 데이터입니다." << endl;
-                }
-
-                else
+                else if (data > currentNode->data)
                 {
                     if (currentNode->right == nullptr)
                     {
-                        Node * right = currentNode->right;
+                        currentNode->right = new Node;
 
-                        right->data = data;
-                        right->left = nullptr;
-                        right->right = nullptr;
+                        currentNode->right->data = data;
+                        currentNode->right->left = nullptr;
+                        currentNode->right->right = nullptr;
                     }
 
                     else
                     {
                         currentNode = currentNode->right;
                     }
+                }
+
+                // 중복된 data라면 data를 넣지 못하게 하기
+                else
+                {
+                    cout << "중복된 데이터입니다." << endl;
+                    break;
                 }
             }
         }
@@ -122,5 +123,9 @@ public:
 
 int main()
 {
+    Set <int> set;
+
+    set.insert(10);
+
     return 0;
 }
