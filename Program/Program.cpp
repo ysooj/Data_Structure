@@ -205,105 +205,145 @@ public:
         Node * currentNode = root;
         Node * parentNode = nullptr;
 
-        while (currentNode != nullptr && currentNode->data != data)
-        {
-            if (data < currentNode->data)
-            {
-                parentNode = currentNode;
-                currentNode = currentNode->left;
-            }
-
-            else
-            {
-                parentNode = currentNode;
-                currentNode = currentNode->right;
-            }
-        }
-
-        // erase 함수의 역할
-        // 1. 자식 노드가 하나도 없을 때
-        if (currentNode->left == nullptr && currentNode->right == nullptr)
-        {
-            if (currentNode == root && parentNode == root)
-            {
-                root = nullptr;
-
-                delete currentNode;
-            }
-
-            else
-            {
-                delete currentNode;
-
-                currentNode = parentNode;
-            }
-        }
-
-        cout << "Found the data!" << endl;
-
-
-        
-         
-        
-        // 2. 자식 노드가 하나만 있을 때
-        
-        
-        // 3. 자식 노드가 두 개 있을 때
-    }
-
-    void erase_gpt(T data)
-    {
-        Node* currentNode = root;
-        Node* parentNode = nullptr;
-
-        // 삭제할 노드 탐색
+        // [1] 삭제할 노드를 찾는 과정
+        //     - 루트부터 시작하여 data를 가진 노드를 찾을 때까지
+        //       왼쪽 또는 오른쪽으로 내려가면서 탐색
         while (currentNode != nullptr && currentNode->data != data)
         {
             parentNode = currentNode;
 
             if (data < currentNode->data)
-                currentNode = currentNode->left;
+            {
+                currentNode = currentNode->left;    // 더 작은 쪽으로 이동
+            }
+
             else
-                currentNode = currentNode->right;
+            {
+                currentNode = currentNode->right;   // 더 큰 쪽으로 이동
+            }
         }
 
-        // 찾지 못한 경우
+        // [2] 삭제할 데이터를 찾지 못한 경우
+        //     - currentNode가 nullptr이면 트리에 해당 data가 없음
         if (currentNode == nullptr)
         {
-            cout << "해당 데이터를 찾을 수 없습니다." << endl;
+            cout << "the data does not exist" << endl;
+
+            // 지울 data를 찾지 못하면 바로 함수 종료.
             return;
         }
 
-        // 찾은 경우
-        cout << "찾았다! 삭제할 데이터는: " << currentNode->data << endl;
-
-        // [1] 자식 노드가 하나도 없는 경우 (리프 노드)
-        if (currentNode->left == nullptr && currentNode->right == nullptr)
+        // erase 함수의 역할
+        // 1. 자식 노드가 하나도 없을 때
+        // [3] 삭제할 노드를 찾은 경우
+        //     - 삭제할 노드가 단말 노드인 경우(리프 노드) : 그냥 삭제하고 부모에서 연결 제거
+        else if (currentNode->left == nullptr && currentNode->right == nullptr)
         {
-            // (1) 삭제 대상이 루트 노드인 경우
-            if (currentNode == root)
+            // 부모 노드가 있는 경우 (루트가 아님)
+            if (parentNode != nullptr)
             {
-                delete root;
+                // 삭제할 노드가 부모의 왼쪽 자식인 경우
+                if (parentNode->left == currentNode)
+                {
+                    parentNode->left = nullptr;
+                }
+
+                // 삭제할 노드가 부모의 오른쪽 자식인 경우
+                else
+                {
+                    parentNode->right = nullptr;
+                }
+            }
+
+            // 삭제할 노드가 루트인 경우
+            else
+            {
                 root = nullptr;
             }
-            // (2) 부모 노드에서 자식 연결 끊기
-            else if (parentNode->left == currentNode)
-            {
-                delete currentNode;
-                parentNode->left = nullptr;
-            }
-            else if (parentNode->right == currentNode)
-            {
-                delete currentNode;
-                parentNode->right = nullptr;
-            }
-
-            return; // 여기서 끝내야 아래 코드 실행 안 함
         }
 
-        // [2] 자식 노드가 하나만 있을 때 (작성 예정)
 
-        // [3] 자식 노드가 두 개 있을 때 (작성 예정)
+        // 2. 자식 노드가 하나만 있을 때
+        // [4] 자식 노드가 하나만 있는 경우
+        //     - 왼쪽 또는 오른쪽 자식만 있는 경우,
+        //       부모 노드가 삭제할 노드 대신 자식 노드를 가리키게 함
+        else if (currentNode->left == nullptr || currentNode->right == nullptr)
+        {
+            // 삭제할 노드가 루트인 경우
+            if (currentNode == root)
+            {
+                if (currentNode->left != nullptr)
+                {
+                    root = currentNode->left;
+                }
+                else
+                {
+                    root = currentNode->right;
+                }
+            }
+
+            // 루트가 아닌 경우
+            else
+            {
+                Node * childNode = nullptr;
+
+                if (currentNode->left != nullptr)
+                {
+                    childNode = currentNode->left;
+                }
+
+                else
+                {
+                    childNode = currentNode->right;
+                }
+
+                if (parentNode->left == currentNode)
+                {
+                    parentNode->left = childNode;
+                }
+
+                else
+                {
+                    parentNode->right = childNode;
+                }
+            }
+        }
+
+        // 3. 자식 노드가 두 개 있을 때
+        // [5] 자식 노드가 두 개 있는 경우
+        //     - 왼쪽 서브트리에서 가장 큰 값 또는
+        //       오른쪽 서브트리에서 가장 작은 값을 찾아 교체해야 함
+
+        // childNode의 left가 nullptr이 될 때까지 childNode의 위치를 갱신시키면서 찾아준다.
+        // 찾으면 root 노드의 right로 올려준다.
+        // traceNode의 left를 childNode의 right로 옮겨준다.
+        else if (currentNode->left != nullptr && currentNode->right != nullptr)
+        {
+            Node * childNode = currentNode->right;
+            Node * traceNode = currentNode;
+
+            while (childNode->left != nullptr)
+            {
+                traceNode = childNode;
+                childNode = childNode->left;
+            }
+
+            currentNode->data = childNode->data;
+
+            if (traceNode->right == nullptr)
+            {
+                traceNode->left = childNode->right;
+            }
+            else
+            {
+                traceNode->right = childNode->right;
+            }
+        }
+
+        delete currentNode;
+
+        cout << "Deleted the data!" << endl;
+        cout << endl;
     }
 
     ~Set()
@@ -317,10 +357,14 @@ int main()
     Set <int> set;
 
     set.insert(10);
-    set.insert(6);
+    set.insert(5);
     set.insert(20);
-    set.insert(3);
     set.insert(15);
+    set.insert(30);
+    set.insert(24);
+    set.insert(27);
+
+    set.erase(20);
 
     return 0;
 }
