@@ -158,6 +158,56 @@ public:
         }
     }
 
+    void remove(T data)
+    {
+        if (head == nullptr)
+        {
+            cout << "Linked list is empty" << endl;
+        }
+
+        Node* currentNode = head; // 지울 노드
+        Node* previousNode = nullptr;      // 지울 노드의 이전 노드
+
+        int count = size;
+
+        for (int i = 0; i < count; i++)
+        {
+            if (currentNode->data == data)
+            {
+                if (currentNode == head)
+                {
+                    currentNode = currentNode->next;
+
+                    pop_back();
+                }
+
+                else if (currentNode == head->next)   
+                {
+                    currentNode = currentNode->next;
+
+                    pop_front();
+                }
+
+                else
+                {
+                    previousNode->next = currentNode->next;
+
+                    delete currentNode;
+
+                    currentNode = previousNode->next;
+
+                    size--;
+                }
+            }
+
+            else
+            {
+                previousNode = currentNode;
+                currentNode = previousNode->next;
+            }
+        }
+    }
+
     bool empty()
     {
         return (head == nullptr);
@@ -178,17 +228,23 @@ int main()
     List <int> list;
 
     list.push_back(10);
+    list.push_back(5);
     list.push_back(20);
 
     list.push_front(5);
 
-    list.pop_front();
-    list.pop_front();
-
-    list.pop_back();
-    list.pop_back();
+    //list.pop_front();
+    //list.pop_front();
+    //
+    //list.pop_back();
+    //list.pop_back();
 
     cout << list.empty() << endl;
+
+    list.remove(5);
+    list.remove(10);
+    list.remove(20);
+    list.remove(20);
 
     return 0;
 }
