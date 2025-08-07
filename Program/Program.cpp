@@ -33,11 +33,13 @@ using namespace std;
 //   - 최악: O(n) (편향 트리처럼 한쪽으로 치우친 경우)
 #pragma endregion
 
+// Set 클래스: 이진 탐색 트리 형태의 집합 구현
 template <typename T>
 
 class Set
 {
 private:
+    // 노드 구조체: 값(data), 왼쪽/오른쪽 자식 포인터 포함
     struct Node
     {
         T data;
@@ -50,7 +52,7 @@ private:
         }
     };
 
-    Node * root;
+    Node * root;    // 트리의 루트 노드
 
 public:
     Set()
@@ -129,6 +131,7 @@ public:
         }
     }
 
+    // 노드 삽입 (중복 방지)
     void insert(T data)
     {
         Node * newNode = new Node(data);
@@ -146,7 +149,7 @@ public:
             {
                 if (currentNode->data == data)
                 {
-                    delete newNode;
+                    delete newNode; // 중복이면 삽입 안 함
 
                     return;
                 }
@@ -180,6 +183,7 @@ public:
         }
     }
 
+    // 재귀적으로 트리 전체 해제
     // 후위 순회(Left → Right → Root) ; 후위 순회를 사용해야 자식 노드부터 안전하게 지운 뒤 부모 노드를 삭제할 수 있다.
     void release(Node * root)
     {
@@ -200,31 +204,32 @@ public:
         }
     }
 
+    // 노드 삭제
     void erase(T data)
     {
-        Node * currentNode = root;
-        Node * parentNode = nullptr;
+        Node * currentNode = root;      // 삭제 대상 노드를 찾기 위한 포인터
+        Node * parentNode = nullptr;    // 삭제 대상의 부모 노드를 추적
 
-        // [1] 삭제할 노드를 찾는 과정
-        //     - 루트부터 시작하여 data를 가진 노드를 찾을 때까지
-        //       왼쪽 또는 오른쪽으로 내려가면서 탐색
+        // [1단계] 삭제할 노드 탐색
+        // - 트리를 루트부터 내려가면서 삭제할 값을 왼쪽 또는 오른쪽으로 내려가면서 탐색
         while (currentNode != nullptr && currentNode->data != data)
         {
             parentNode = currentNode;
 
             if (data < currentNode->data)
             {
-                currentNode = currentNode->left;    // 더 작은 쪽으로 이동
+                currentNode = currentNode->left;    // 삭제할 값이 더 작으면 왼쪽으로
             }
 
             else
             {
-                currentNode = currentNode->right;   // 더 큰 쪽으로 이동
+                currentNode = currentNode->right;   // 크면 오른쪽으로
             }
         }
 
         // [2] 삭제할 데이터를 찾지 못한 경우
         //     - currentNode가 nullptr이면 트리에 해당 data가 없음
+        // [1단계 종료] 해당 값이 트리에 없는 경우
         if (currentNode == nullptr)
         {
             cout << "the data does not exist" << endl;
@@ -233,75 +238,82 @@ public:
             return;
         }
 
-        // erase 함수의 역할
-        // 1. 자식 노드가 하나도 없을 때
-        // [3] 삭제할 노드를 찾은 경우
-        //     - 삭제할 노드가 단말 노드인 경우(리프 노드) : 그냥 삭제하고 부모에서 연결 제거
+        // [2단계] 자식 노드가 없을 경우 (리프 노드) → 바로 삭제
+        // 그냥 삭제하고 부모에서 연결 제거
         else if (currentNode->left == nullptr && currentNode->right == nullptr)
         {
             // 부모 노드가 있는 경우 (루트가 아님)
+            // (1) 삭제할 노드가 루트가 아닌 경우
             if (parentNode != nullptr)
             {
-                // 삭제할 노드가 부모의 왼쪽 자식인 경우
+                // 삭제할 노드가 부모의 왼쪽 자식이면 왼쪽 연결 끊기
                 if (parentNode->left == currentNode)
                 {
                     parentNode->left = nullptr;
                 }
 
-                // 삭제할 노드가 부모의 오른쪽 자식인 경우
+                // 삭제할 노드가 부모의 오른쪽 자식이면 오른쪽 연결 끊기
                 else
                 {
                     parentNode->right = nullptr;
                 }
             }
 
-            // 삭제할 노드가 루트인 경우
+            // (2) 삭제할 노드가 루트일 경우
             else
             {
-                root = nullptr;
+                root = nullptr; // 루트 자체를 없앰
             }
+
+            delete currentNode; // 실제 메모리에서 제거
+
+            cout << "Deleted the data!" << endl;
         }
 
 
-        // 2. 자식 노드가 하나만 있을 때
-        // [4] 자식 노드가 하나만 있는 경우
+        // [3단계] 자식이 **하나만 있을 경우**
+        // - 하나뿐인 자식을 부모가 직접 가리키게 한다.
         //     - 왼쪽 또는 오른쪽 자식만 있는 경우,
         //       부모 노드가 삭제할 노드 대신 자식 노드를 가리키게 함
         else if (currentNode->left == nullptr || currentNode->right == nullptr)
         {
-            // 삭제할 노드가 루트인 경우
+            // (1) 삭제할 노드가 루트일 경우
             if (currentNode == root)
             {
+                // 왼쪽 자식만 있는 경우 → 루트를 왼쪽 자식으로 교체
                 if (currentNode->left != nullptr)
                 {
                     root = currentNode->left;
                 }
+                // 오른쪽 자식만 있는 경우 → 루트를 오른쪽 자식으로 교체
                 else
                 {
                     root = currentNode->right;
                 }
             }
 
-            // 루트가 아닌 경우
+            // (2) 루트가 아닌 경우 → 부모가 그 자식을 대신 가리키게 연결 수정
             else
             {
-                Node * childNode = nullptr;
+                Node * childNode = nullptr; // 자식 노드를 저장할 변수
 
+                // 왼쪽 자식이 있는 경우 → 자식 노드를 왼쪽으로 지정
                 if (currentNode->left != nullptr)
                 {
                     childNode = currentNode->left;
                 }
-
+                // 오른쪽 자식이 있는 경우 → 자식 노드를 오른쪽으로 지정
                 else
                 {
                     childNode = currentNode->right;
                 }
 
+                // (2-1) 삭제할 노드가 부모의 왼쪽 자식인 경우
                 if (parentNode->left == currentNode)
                 {
                     parentNode->left = childNode;
                 }
-
+                // (2-2) 삭제할 노드가 부모의 오른쪽 자식인 경우
                 else
                 {
                     parentNode->right = childNode;
@@ -309,38 +321,44 @@ public:
             }
         }
 
-        // 3. 자식 노드가 두 개 있을 때
-        // [5] 자식 노드가 두 개 있는 경우
-        //     - 왼쪽 서브트리에서 가장 큰 값 또는
-        //       오른쪽 서브트리에서 가장 작은 값을 찾아 교체해야 함
-
-        // childNode의 left가 nullptr이 될 때까지 childNode의 위치를 갱신시키면서 찾아준다.
-        // 찾으면 root 노드의 right로 올려준다.
-        // traceNode의 left를 childNode의 right로 옮겨준다.
+        // [4단계] 자식이 **두 개 있는 경우**
+        // - 오른쪽 서브트리에서 가장 작은 값을 가져와서 대체
         else if (currentNode->left != nullptr && currentNode->right != nullptr)
         {
-            Node * childNode = currentNode->right;
-            Node * traceNode = currentNode;
+            // (1) 오른쪽 서브트리에서 가장 작은 값을 가진 노드를 찾기
+            //     → 이 노드는 currentNode를 대체할 값이 됨 (BST 성질 유지)
+            Node * childNode = currentNode->right;  // 오른쪽 서브트리의 루트부터 시작
+            Node * traceNode = currentNode;         // 후계자 노드의 부모 노드를 추적
 
+            // 왼쪽 자식이 없을 때까지 반복 → 가장 작은 값
             while (childNode->left != nullptr)
             {
-                traceNode = childNode;
-                childNode = childNode->left;
+                traceNode = childNode;          // 부모를 갱신
+                childNode = childNode->left;    // 왼쪽으로 내려감
             }
 
+
+            // (2) 삭제할 노드의 데이터를 후계자의 데이터로 교체
+            //     → 값만 바꾸고, 실제 삭제는 childNode에서 수행
             currentNode->data = childNode->data;
 
+
+            // (3) 후계자 노드(childNode)의 부모와 연결 끊기
+            //     - 후계자가 traceNode의 왼쪽 자식인 경우
+            //     - 후계자 노드의 오른쪽 자식이 있을 수도 있으므로 연결 유지
             if (traceNode->right == nullptr)
             {
                 traceNode->left = childNode->right;
             }
             else
             {
+                // 예외적으로, 후계자가 currentNode 바로 오른쪽 자식일 수도 있음
                 traceNode->right = childNode->right;
             }
-        }
 
-        delete currentNode;
+            // (4) 후계자 노드 삭제
+            delete childNode;
+        }
 
         cout << "Deleted the data!" << endl;
         cout << endl;
@@ -364,7 +382,14 @@ int main()
     set.insert(24);
     set.insert(27);
 
-    set.erase(20);
+    // [2] 리프 노드 삭제 테스트
+    set.erase(5);    // 리프 노드
+
+    // [3] 자식 1개 노드 삭제 테스트
+    set.erase(30);   // 자식 하나 (왼쪽)만 있음
+
+    // [4] 자식 2개 노드 삭제 테스트
+    set.erase(20);   // 자식 2개 (15, 24)
 
     return 0;
 }
